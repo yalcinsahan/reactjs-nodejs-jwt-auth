@@ -3,10 +3,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import Login from './Login';
 import Register from './Register';
-import Profile from './Profile';
 import Homepage from './Homepage';
-import { getCurrentUser } from '../services/auth.service';
 import UserContext from '../context/userContext';
+import CustomData from './CustomData';
 
 const Navbar = () => {
 
@@ -21,7 +20,7 @@ const Navbar = () => {
       <div className="container-fluid">
         <ul className="nav navbar-nav">
       <li className="text-white mr-4"> 
-        <Link className="nav-link text-white" to="/profile">Profile</Link>
+        <Link className="nav-link text-white" to="/customdata">Custom Data</Link>
         </li>
       </ul>
       <ul className="nav navbar-nav navbar-right">
@@ -63,8 +62,8 @@ const Navbar = () => {
     <Route path="/register">
         <Register/>
     </Route>
-    <Route path="/profile">
-        <Profile/>
+    <Route path="/customdata">
+        <CustomData/>
     </Route>
 </Switch>
        </Router>
