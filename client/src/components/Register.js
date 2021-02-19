@@ -12,7 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [redirect,setRedirect] = useState(false)
     const [success,setSuccess] = useState(false)
-    const [errMessage,setErrMessage] = useState("");
+    const [errMessage,setErrMessage] = useState([]);
 
 
     const handleForm= async (e)=>{
@@ -23,7 +23,7 @@ const Login = () => {
             setRedirect(true)
            }, 2000);
         }).catch((err)=>{
-          setErrMessage(err.response.data.message)
+          setErrMessage([err.response.data.email,err.response.data.name,err.response.data.password])
           setTimeout(() => {
             setErrMessage("")
           }, 2000);
@@ -46,7 +46,7 @@ const Login = () => {
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
 
           {errMessage.length>0 && <div className="alert alert-danger text-center p-3" role="alert">
-          {errMessage}
+          {errMessage.map((err)=><p>{err}</p>)}
           </div>}
 
             <div className="card card-signin my-5">

@@ -4,54 +4,57 @@ import bcrypt from 'bcrypt'
 
 
 
-export const login = (req,res) =>{
+export const login = async (req,res) =>{
 
-    User.findOne({email: req.body.email}).exec((err,user)=>{
-        if(err){
-            res.status(500).send({ message: err });
-        return;
-        }
-
-        if (!user) {
-            return res.status(404).send({ message: "User Not found." });
-          }
-
-          var passwordIsValid = bcrypt.compareSync(
-            req.body.password,
-            user.password
-          );
+    //verilen email'deki user aranıyor.
+    const user = await User.findOne({email: req.body.email});
+    if(user===null) return res.status(404).send({message: "bu email ile kayıtlı bir kullanıcı bulunamadı."})
     
-          if (!passwordIsValid) {
-            return res.status(401).send({
-              accessToken: null,
-              message: "Invalid Password!"
-            });
-          }
-    
-          var token = jwt.sign({ id: user._id }, "my secret key", {
-            expiresIn: 86400 // 24 hours
-          }); 
+    //user bulunduysa password kontrolü yapılacak.
+    let passwordIsValid = await bcrypt.compare(req.body.password,user.password);
+    if(!passwordIsValid) return res.status(401).send({message: "şifre hatalı."})
 
-          res.status(200).send({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            accessToken: token
-          });
-    })
+    //password doğruysa bir token oluşturulacak.
+    //token'in geçerliliği 86400 ms olarak ayarlandı.
+    let token = jwt.sign({id: user._id},"my secret key",{expiresIn: 86400})
+
+    //giriş işlemi başarılı olduğu için name, email ve token; client'a gönderilecek.
+    return res.status(200).send({name: user.name, email: user.email, accessToken: token}); 
     
 }
 
 export const register = (req,res) =>{
+    //request'ten gelen name, email ve password değerleri alınıyor.
     const {name, email, password} = req.body
+
+    //create metodu ile user oluşturuluyor.
     User.create({name,email,password})
     .then(result=>res.status(201).send(result))
     .catch(err=>{
-      if(err.code===11000){
-        res.status(400).send({message: "that email is already registered"})
-      }
-      else{
-        res.status(400).send(err)
-      }
+
+      res.status(400).send(handleErrors(err))
+
     })
+}
+
+  //handle errors
+  const handleErrors = (err) => {
+
+  let errors = { email: "", password: "",name:"" };
+
+  // duplicate email error
+  if (err.code === 11000) {
+    errors.email = 'that email is already registered';
+    return errors;
+  }
+
+  // validation errors
+  if (err.message.includes('user validation failed')) {
+    Object.values(err.errors).forEach(({ properties }) => {
+
+      errors[properties.path] = properties.message;
+    });
+  }
+
+  return errors;
 }
