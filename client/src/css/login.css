@@ -34,7 +34,7 @@ body {
 
 .form-signin .btn {
   font-size: 80%;
-  border-radius: 5rem;
+  border-radius: 9px;
   letter-spacing: .1rem;
   font-weight: bold;
   padding: 1rem;
@@ -103,15 +103,6 @@ body {
   color: #777;
 }
 
-.btn-google {
-  color: white;
-  background-color: #ea4335;
-}
-
-.btn-facebook {
-  color: white;
-  background-color: #3b5998;
-}
 
 /* Fallback for Edge
 -------------------------------------------------- */

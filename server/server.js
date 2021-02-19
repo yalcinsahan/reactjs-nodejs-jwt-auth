@@ -11,7 +11,7 @@ app.use(cors())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-mongoose.connect("mongodb://localhost:27017/react-node-auth",
+mongoose.connect("mongodb://localhost:27017/react-node-auth-jwt",
 { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
 .then(()=>app.listen(8000))
 .catch((err)=>console.log(err));

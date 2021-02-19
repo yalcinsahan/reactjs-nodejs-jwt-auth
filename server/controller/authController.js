@@ -2,6 +2,8 @@ import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
+
+
 export const login = (req,res) =>{
 
     User.findOne({email: req.body.email}).exec((err,user)=>{
@@ -44,5 +46,13 @@ export const register = (req,res) =>{
     const {name, email, password} = req.body
     User.create({name,email,password})
     .then(result=>res.status(201).send(result))
-    .catch(err=>res.status(400).send(err))
+    .catch(err=>{
+      if(err.code===11000){
+        res.status(400).send({message: "that email is already registered"})
+      }
+      else{
+        res.status(400).send(err)
+        //console.log(err.errors.password.message);
+      }
+    })
 }
