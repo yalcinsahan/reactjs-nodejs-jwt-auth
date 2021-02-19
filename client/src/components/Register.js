@@ -12,6 +12,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [redirect,setRedirect] = useState(false)
     const [success,setSuccess] = useState(false)
+    const [errMessage,setErrMessage] = useState("");
 
 
     const handleForm= async (e)=>{
@@ -21,6 +22,11 @@ const Login = () => {
           setTimeout(() => {
             setRedirect(true)
            }, 2000);
+        }).catch((err)=>{
+          setErrMessage(err.response.data.message)
+          setTimeout(() => {
+            setErrMessage("")
+          }, 2000);
         })
     }
 
@@ -31,13 +37,18 @@ const Login = () => {
         {success 
         ? 
         <div className="d-flex justify-content-center">
-        <div class="alert alert-success text-center p-3" role="alert">
+        <div className="alert alert-success text-center p-3" role="alert">
           Kaydınız başarıyla tamamlandı, giriş sayfasına yönlendiriliyorsunuz...
         </div>
         </div>
         :
         <div className="row"> 
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+
+          {errMessage.length>0 && <div className="alert alert-danger text-center p-3" role="alert">
+          {errMessage}
+          </div>}
+
             <div className="card card-signin my-5">
               <div className="card-body">
                 <h5 className="card-title text-center">Register</h5>

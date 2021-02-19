@@ -8,10 +8,7 @@ export const login = (email,password) => {
     return axios.post("http://localhost:8000/login",{email,password})
     .then((response)=>{
         if(response.data.accessToken){
-            localStorage.setItem("user",JSON.stringify(response.data))
-               
-            console.log(response.data);
-
+            localStorage.setItem("user",JSON.stringify(response.data))            
         }
 
         return response.data;

@@ -1,10 +1,23 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
+import isEmail from 'validator/lib/isEmail.js'
 
 const userSchema = mongoose.Schema({
-    name: String,
-    email: String,
-    password: String,
+    name: {
+      type: String,
+      required: [true, 'Please enter a name'],
+    },
+    email: {
+      type: String,
+      required: [true, 'Please enter an email'],
+      unique: true,
+      validate: [isEmail, 'Please enter a valid email']
+    },
+    password: {
+      type: String,
+      required: [true, 'Please enter a password'],
+      minlength: [6, 'Minimum password length is 6 characters'],
+    },
     accessToken: String,
 })
 
