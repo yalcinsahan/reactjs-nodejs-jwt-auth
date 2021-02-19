@@ -35,7 +35,7 @@ const Navbar = () => {
     <div className="container-fluid">
     <ul className="nav navbar-nav">
   <li className="text-white mr-4"> 
-    <Link className="nav-link text-white" to="/profile">Homepage</Link>
+    <Link className="nav-link text-white" to="/">Homepage</Link>
     </li>
   </ul>
   <ul className="nav navbar-nav navbar-right">

@@ -52,7 +52,6 @@ export const register = (req,res) =>{
       }
       else{
         res.status(400).send(err)
-        //console.log(err.errors.password.message);
       }
     })
 }
